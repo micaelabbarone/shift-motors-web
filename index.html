@@ -1,0 +1,899 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Shift Motors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+<style>
+@font-face{font-family:"Designer";src:url("fonts/Designer.otf") format("opentype");font-display:swap}
+/* Layout: una sola columna oscura tipo tablero de auto; el catálogo corre como carrusel horizontal, la sección "Nosotros" se aclara en papel. */
+:root{
+  --ink:#01010D;      /* negro */
+  --night:#00023B;    /* azul noche */
+  --blue:#042680;     /* azul principal */
+  --mist:#9BA8CC;     /* azul grisáceo */
+  --paper:#DBDFE2;    /* blanco */
+  --line:rgba(155,168,204,.16);
+  --line-strong:rgba(155,168,204,.32);
+  --wa:#1FA855;
+  --display:"Designer","Montserrat",system-ui,sans-serif;
+  --body:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gutter:clamp(16px,4vw,48px);
+  --max:1240px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--mist);outline-offset:3px}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--mist)}
+h1,h2,h3{margin:0}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:48px;padding:0 1.5em;border-radius:4px;font:600 .82rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-primary{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+.btn-primary:hover{background:#0634B0;border-color:#0634B0}
+.btn-ghost{background:transparent;color:var(--paper);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--paper)}
+.btn-wa{background:var(--wa);color:#fff;border-color:var(--wa)}
+.btn-wa:hover{background:#178F47;border-color:#178F47}
+.btn-light{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn-light:hover{background:var(--blue);border-color:var(--blue)}
+
+/* Header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(1,1,13,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.top .brand img{height:30px;width:auto}
+.top nav{display:flex;align-items:center;gap:28px}
+.top nav a{font-size:.75rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--mist);transition:color .2s}
+.top nav a:hover{color:var(--paper)}
+.top .btn{min-height:40px;padding:0 1.1em;font-size:.72rem}
+@media (max-width:720px){.top nav a.navlink{display:none}.top .btn span{display:none}.top .btn{padding:0 .8em}}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;padding-block:clamp(64px,11vw,140px) clamp(56px,8vw,100px);border-bottom:1px solid var(--line)}
+.hero::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(60% 70% at 85% 110%,rgba(4,38,128,.75),transparent 70%),
+  radial-gradient(40% 50% at 100% 0%,rgba(0,2,59,.9),transparent 70%);pointer-events:none}
+.speed{position:absolute;inset:0;pointer-events:none;opacity:.5}
+.speed i{position:absolute;right:-30%;height:1px;width:45%;background:linear-gradient(90deg,transparent,var(--mist));animation:streak 4.5s linear infinite;opacity:0}
+.speed i:nth-child(1){top:28%;animation-delay:0s}
+.speed i:nth-child(2){top:46%;animation-delay:1.6s;width:30%}
+.speed i:nth-child(3){top:63%;animation-delay:2.7s}
+.speed i:nth-child(4){top:78%;animation-delay:.8s;width:22%}
+@keyframes streak{0%{transform:translateX(0);opacity:0}15%{opacity:.7}100%{transform:translateX(-260%);opacity:0}}
+.hero .wrap{position:relative;display:grid;gap:clamp(28px,4vw,44px)}
+.hero-logo{width:min(560px,86%);height:auto}
+.hero h1{font-family:var(--body);font-weight:300;font-size:clamp(2.2rem,6vw,4.4rem);line-height:1.08;letter-spacing:-.015em;max-width:16ch}
+.hero h1 strong{font-weight:700}
+.hero p.lead{margin:0;max-width:52ch;color:var(--mist);font-size:clamp(1rem,1.4vw,1.1rem)}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px}
+.odo{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:8px}
+.odo-digits{display:inline-flex;gap:3px;padding:6px;background:var(--night);border:1px solid var(--line-strong);border-radius:4px}
+.odo-digits b{display:grid;place-items:center;width:26px;height:34px;background:var(--ink);color:var(--paper);font:600 1.05rem/1 var(--body);font-variant-numeric:tabular-nums;border-radius:2px}
+.odo-digits b:last-child{background:var(--blue)}
+.odo small{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mist)}
+
+/* Secciones */
+.section{padding-block:clamp(64px,9vw,120px)}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,44px)}
+.head h2{font-family:var(--display);font-weight:400;font-size:clamp(2.6rem,7vw,5rem);line-height:.9;letter-spacing:.01em;margin-top:10px}
+.head p{margin:12px 0 0;color:var(--mist);max-width:44ch}
+
+/* Carrusel */
+.car-ctrl{display:flex;gap:8px}
+.icon-btn{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1px solid var(--line-strong);background:transparent;color:var(--paper);cursor:pointer;transition:border-color .2s,background .2s}
+.icon-btn:hover{border-color:var(--paper);background:rgba(155,168,204,.08)}
+.icon-btn svg{width:18px;height:18px}
+.track-wrap{position:relative}
+.track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 2*20px)/3);gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:4px}
+.track::-webkit-scrollbar{display:none}
+@media (max-width:1000px){.track{grid-auto-columns:calc((100% - 20px)/2)}}
+@media (max-width:640px){.track{grid-auto-columns:86%;gap:14px}}
+.progress{margin-top:28px;height:2px;background:var(--line);position:relative;overflow:hidden;border-radius:2px}
+.progress span{position:absolute;inset:0 auto 0 0;background:var(--mist);width:20%;transition:transform .4s ease,width .4s ease}
+
+.card{scroll-snap-align:start;display:flex;flex-direction:column;background:var(--night);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-width:0;transition:border-color .25s,transform .25s}
+.card:hover{border-color:var(--line-strong);transform:translateY(-3px)}
+.photo{position:relative;aspect-ratio:4/3;background:var(--ink);overflow:hidden;max-width:100%}
+.photo img{width:100%;height:100%;object-fit:cover;transition:opacity .3s}
+.photo .tag,.stage .tag{position:absolute;top:12px;left:12px;padding:5px 9px;font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:rgba(1,1,13,.75);border:1px solid var(--line-strong);border-radius:3px}
+.photo .nav{position:absolute;top:50%;translate:0 -50%;width:36px;height:36px;border-radius:50%;border:0;background:rgba(1,1,13,.65);color:var(--paper);display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .2s}
+.photo .nav svg{width:14px;height:14px}
+.photo .prev{left:10px}.photo .next{right:10px}
+.card:hover .photo .nav,.photo .nav:focus-visible{opacity:1}
+@media (hover:none){.photo .nav{opacity:1}}
+.dots{position:absolute;bottom:12px;left:50%;translate:-50% 0;display:flex;gap:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:rgba(219,223,226,.4)}
+.dots i.on{background:var(--paper);width:18px;border-radius:3px}
+.count{position:absolute;bottom:10px;right:12px;font-size:.66rem;font-weight:600;letter-spacing:.1em;color:var(--paper);background:rgba(1,1,13,.65);padding:3px 7px;border-radius:3px;font-variant-numeric:tabular-nums}
+.body{display:flex;flex-direction:column;gap:16px;padding:20px;flex:1}
+.body .model{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mist)}
+.body h3{font-size:1.2rem;font-weight:700;line-height:1.25;margin-top:4px}
+.stats{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div{padding:12px 0}
+.stats div+div{padding-left:16px;border-left:1px solid var(--line)}
+.stats dt{font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mist)}
+.stats dd{margin:2px 0 0;font-size:1.15rem;font-weight:600;font-variant-numeric:tabular-nums}
+.specs{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.specs li{font-size:.72rem;font-weight:500;padding:5px 9px;border:1px solid var(--line);border-radius:3px;color:var(--paper)}
+.card .row{display:flex;gap:8px;margin-top:auto}
+.card .row .btn{flex:1;min-height:44px;padding:0 .9em;font-size:.7rem}
+
+/* Ficha (dialog) */
+dialog{border:0;padding:0;background:transparent;color:var(--paper);max-width:min(980px,calc(100vw - 32px));width:100%;max-height:calc(100dvh - 32px)}
+dialog::backdrop{background:rgba(1,1,13,.85);backdrop-filter:blur(4px)}
+.sheet{background:var(--night);border:1px solid var(--line-strong);border-radius:8px;display:grid;grid-template-columns:1.25fr 1fr;overflow:hidden;max-height:calc(100dvh - 32px)}
+.sheet .gal{background:var(--ink);display:flex;flex-direction:column;min-width:0}
+.sheet .gal .photo{aspect-ratio:4/3}
+.thumbs{display:flex;gap:8px;padding:10px;overflow-x:auto}
+.thumbs button{flex:none;width:72px;aspect-ratio:4/3;padding:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;cursor:pointer;background:none;opacity:.55}
+.thumbs button.on{opacity:1;border-color:var(--paper)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.sheet .info{padding:28px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;min-width:0}
+.sheet h3{font-size:1.5rem;font-weight:700;line-height:1.2}
+.spec-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.spec-table th{text-align:left;font-weight:500;color:var(--mist);padding:9px 12px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.spec-table td{text-align:right;font-weight:600;padding:9px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.close{position:absolute;top:12px;right:12px;z-index:2;background:rgba(1,1,13,.7)}
+@media (max-width:760px){.sheet{grid-template-columns:1fr;overflow-y:auto}.sheet .info{overflow:visible;padding:22px}}
+
+/* Nosotros (papel) */
+.paper{background:var(--paper);color:var(--ink)}
+.paper .eyebrow{color:var(--blue)}
+.paper .head p{color:#3A4366}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,32px)}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.panel{border:1px solid rgba(1,1,13,.14);border-radius:6px;padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel.dark{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+.panel h3{font-size:clamp(1.35rem,2.2vw,1.7rem);font-weight:700;line-height:1.2}
+.panel p{margin:0;max-width:56ch}
+.panel.dark p{color:#C9D0E6}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:16px 0;border-top:1px solid rgba(1,1,13,.14);counter-increment:s}
+.steps li::before{content:counter(s,decimal-leading-zero);font:400 1.5rem/1 var(--display);color:var(--blue);padding-top:2px}
+.steps b{display:block;font-size:.98rem}
+.steps span{font-size:.9rem;color:#3A4366}
+.swap{display:flex;align-items:center;gap:14px;padding:18px;border:1px dashed rgba(219,223,226,.35);border-radius:4px}
+.swap svg{width:100%;max-width:280px;height:auto}
+.panel.dark ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.panel.dark li{display:flex;gap:10px;font-size:.95rem}
+.panel.dark li::before{content:"";flex:none;width:14px;height:1px;background:var(--mist);margin-top:.8em}
+.panel .actions{margin-top:auto;display:flex;flex-wrap:wrap;gap:10px}
+.panel.dark .btn-light{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.panel.dark .btn-light:hover{background:#fff}
+
+/* CTA */
+.cta{position:relative;overflow:hidden;background:var(--blue);padding-block:clamp(56px,8vw,96px)}
+.cta::after{content:"SHIFT";position:absolute;right:-2%;bottom:-18%;font:400 clamp(8rem,26vw,22rem)/1 var(--display);color:rgba(0,2,59,.35);pointer-events:none}
+.cta .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.4fr auto;gap:28px;align-items:end}
+.cta h2{font-weight:300;font-size:clamp(1.8rem,4.4vw,3.2rem);line-height:1.1;max-width:20ch}
+.cta h2 strong{font-weight:700}
+.cta p{margin:14px 0 0;color:#C9D0E6;max-width:48ch}
+.cta .btn-wa{min-height:56px;padding:0 1.8em}
+@media (max-width:760px){.cta .wrap{grid-template-columns:1fr}}
+
+/* Vistas: catálogo completo y detalle */
+.page-head{padding-block:clamp(40px,6vw,72px) 0}
+.crumb{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mist);text-decoration:none}
+.crumb:hover{color:var(--paper)}
+.crumb svg{width:14px;height:14px}
+.page-head h1{font-family:var(--display);font-weight:400;font-size:clamp(2.8rem,8vw,5.6rem);line-height:.9;margin-top:18px}
+.page-head .sub{margin:14px 0 0;color:var(--mist);max-width:52ch}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-block:clamp(28px,4vw,40px) 24px;padding-block:16px;border-block:1px solid var(--line)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:38px;padding:0 1em;border-radius:999px;border:1px solid var(--line-strong);background:transparent;color:var(--mist);font:600 .74rem/1 var(--body);letter-spacing:.08em;cursor:pointer;transition:all .2s}
+.chip:hover{color:var(--paper);border-color:var(--paper)}
+.chip[aria-pressed="true"]{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.chip b{font-weight:500;opacity:.6;margin-left:4px;font-variant-numeric:tabular-nums}
+.sort{display:flex;align-items:center;gap:10px;font-size:.74rem;color:var(--mist);letter-spacing:.08em}
+.sort select{min-height:38px;padding:0 2em 0 .9em;border-radius:4px;border:1px solid var(--line-strong);background:var(--night);color:var(--paper);font:500 .82rem var(--body)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:20px;padding-bottom:clamp(64px,8vw,110px)}
+.empty{grid-column:1/-1;padding:48px 0;color:var(--mist);text-align:center}
+.photo img.go{cursor:zoom-in}
+.see-all{margin-top:28px;display:flex;justify-content:flex-end}
+
+.detail{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:start;padding-block:24px clamp(48px,6vw,80px)}
+@media (max-width:900px){.detail{grid-template-columns:1fr}}
+.stage{position:relative;aspect-ratio:16/10;max-width:100%;background:var(--night);border:1px solid var(--line);border-radius:6px;overflow:hidden;touch-action:pan-y}
+.stage img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+.stage .nav{position:absolute;top:50%;translate:0 -50%;width:46px;height:46px;border-radius:50%;border:1px solid var(--line-strong);background:rgba(1,1,13,.6);color:var(--paper);display:grid;place-items:center;cursor:pointer}
+.stage .nav svg{width:16px;height:16px}
+.stage .prev{left:14px}.stage .next{right:14px}
+.stage .count{bottom:14px;right:14px;font-size:.74rem;padding:5px 9px}
+.stage .zoom{position:absolute;bottom:14px;left:14px;display:flex;align-items:center;gap:6px;font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(1,1,13,.65);padding:6px 10px;border-radius:3px;pointer-events:none}
+.stage .zoom svg{width:13px;height:13px}
+.gthumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:12px}
+@media (max-width:560px){.gthumbs{grid-template-columns:repeat(4,1fr);gap:8px}}
+.gthumbs button{aspect-ratio:4/3;padding:0;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:none;cursor:pointer;opacity:.5;transition:opacity .2s,border-color .2s;max-width:100%}
+.gthumbs button:hover{opacity:.85}
+.gthumbs button.on{opacity:1;border-color:var(--paper)}
+.gthumbs img{width:100%;height:100%;object-fit:cover}
+.aside{position:sticky;top:calc(88px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:20px;min-width:0}
+@media (max-width:900px){.aside{position:static}}
+.aside h1{font-size:clamp(1.7rem,3vw,2.3rem);font-weight:700;line-height:1.15}
+.kpis{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.kpis div{padding:14px 16px;border-bottom:1px solid var(--line)}
+.kpis div:nth-child(odd){border-right:1px solid var(--line)}
+.kpis div:nth-last-child(-n+2){border-bottom:0}
+.kpis dt{font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mist)}
+.kpis dd{margin:4px 0 0;font-size:1.2rem;font-weight:600;font-variant-numeric:tabular-nums}
+.aside .btn{width:100%;min-height:54px}
+.aside .note{margin:0;font-size:.8rem;color:var(--mist)}
+.desc{border-top:1px solid var(--line);padding-top:clamp(28px,4vw,40px);display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(24px,4vw,48px)}
+@media (max-width:900px){.desc{grid-template-columns:1fr}}
+.desc h2,.more h2{font-size:.72rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--mist);margin-bottom:14px}
+.desc p{margin:0;max-width:62ch;font-size:1.02rem}
+.more{padding-block:clamp(48px,6vw,80px)}
+.more .grid{padding-bottom:0}
+
+/* Visor a pantalla completa */
+#lightbox{max-width:100vw;max-height:100dvh;width:100vw;height:100dvh;margin:0}
+#lightbox::backdrop{background:rgba(1,1,13,.96)}
+.lb{position:relative;width:100%;height:100%;display:grid;grid-template-rows:auto 1fr auto;padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.78rem;color:var(--mist);letter-spacing:.08em}
+.lb-img{display:grid;place-items:center;min-height:0;touch-action:pan-y}
+.lb-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}
+.lb-nav{display:flex;justify-content:center;gap:12px;padding-top:12px}
+
+/* Footer */
+footer{background:var(--ink);padding-block:56px 32px;border-top:1px solid var(--line)}
+.foot{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:36px}
+@media (max-width:760px){.foot{grid-template-columns:1fr}}
+.foot img{height:44px;width:auto}
+.foot p{margin:14px 0 0;color:var(--mist);font-size:.9rem;max-width:34ch}
+.foot h4{margin:0 0 14px;font-size:.68rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--mist)}
+.social{display:grid;gap:10px}
+.social a{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:500;font-size:.95rem;padding:10px 0;border-bottom:1px solid var(--line);transition:color .2s}
+.social a:hover{color:#fff}
+.social a svg{width:20px;height:20px;flex:none;color:var(--mist)}
+.social a small{margin-left:auto;color:var(--mist);font-size:.78rem}
+.legal{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.74rem;color:var(--mist);letter-spacing:.04em}
+
+/* Flotante WhatsApp */
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:50;width:56px;height:56px;border-radius:50%;background:var(--wa);color:#fff;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:transform .2s}
+.fab:hover{transform:scale(1.06)}
+.fab svg{width:28px;height:28px}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#inicio" class="brand" aria-label="Shift Motors, inicio"><img src="img/Recurso 1LOGO_EN BLANCO.png" alt="Shift Motors"></a>
+    <nav aria-label="Principal">
+      <a class="navlink" href="#autos">Catálogo</a>
+      <a class="navlink" href="#nosotros">Nosotros</a>
+      <a class="navlink" href="#contacto">Contacto</a>
+      <a class="btn btn-wa" href="https://wa.me/5491122679246" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 4.54 0 8.24 3.7 8.24 8.24 0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg><span>WhatsApp</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="viewHome">
+  <section class="hero" id="inicio">
+    <div class="speed" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Compra · Venta · Consignación</p>
+        <h1 style="margin-top:14px">Estamos creando una agencia <strong>desde cero.</strong></h1>
+      </div>
+      <p class="lead">Autos y motos seleccionados, con información clara y trato directo. Arrancamos con pocas unidades y cada una revisada a conciencia.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#autos">Ver catálogo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="https://instagram.com/shiftmotors.ar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg> Instagram</a>
+      </div>
+      <div class="odo" aria-label="Kilometraje de la agencia: cero">
+        <span class="odo-digits" aria-hidden="true"><b>0</b><b>0</b><b>0</b><b>0</b><b>0</b><b>0</b></span>
+        <small>Kilómetro cero de Shift Motors</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="catalogo">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">Unidades disponibles</p>
+          <h2>Catálogo</h2>
+          <p>Tocá una unidad para ver todas las fotos y la ficha completa. Consultá por WhatsApp y te respondemos al toque.</p>
+        </div>
+        <div class="car-ctrl">
+          <button class="icon-btn" id="trackPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button class="icon-btn" id="trackNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <div class="track-wrap">
+        <div class="track" id="track" tabindex="0" aria-label="Vehículos disponibles"></div>
+      </div>
+      <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+      <div class="see-all"><a class="btn btn-ghost" href="#autos">Ver catálogo completo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    </div>
+  </section>
+
+  <section class="section paper" id="nosotros">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">El negocio</p>
+          <h2>Nosotros</h2>
+          <p>Shift Motors nace con una idea simple: comprar y vender autos sin vueltas. Publicamos cada unidad con fotos reales y datos completos, y acompañamos la operación de punta a punta.</p>
+        </div>
+      </div>
+      <div class="split">
+        <article class="panel">
+          <p class="eyebrow">Estamos buscando</p>
+          <h3>Consignaciones</h3>
+          <p>¿Querés vender tu auto o tu moto sin perder tiempo? Dejalo en consignación: nosotros nos ocupamos de mostrarlo, responder consultas y cerrar la venta.</p>
+          <ol class="steps">
+            <li><div><b>Nos escribís</b><span>Mandanos marca, modelo, año y kilometraje por WhatsApp.</span></div></li>
+            <li><div><b>Tasamos y fotografiamos</b><span>Acordamos un precio de venta y armamos la publicación.</span></div></li>
+            <li><div><b>Publicamos y vendemos</b><span>Lo mostramos en la web y en redes, y gestionamos a los interesados.</span></div></li>
+          </ol>
+          <div class="actions"><a class="btn btn-light" href="https://wa.me/5491122679246?text=Hola%20Shift%20Motors!%20Quiero%20dejar%20mi%20veh%C3%ADculo%20en%20consignaci%C3%B3n." target="_blank" rel="noopener">Consignar mi vehículo</a></div>
+        </article>
+        <article class="panel dark">
+          <p class="eyebrow" style="color:var(--mist)">También</p>
+          <h3>Aceptamos permutas</h3>
+          <p>Entregá tu usado como parte de pago y llevate una unidad del catálogo. Lo evaluamos y te pasamos una propuesta concreta.</p>
+          <div class="swap" aria-hidden="true">
+            <svg viewBox="0 0 280 60" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 40h6m28 0h30m28 0h4v-9l-10-3-14-10H34l-14 10-8 2v10" opacity=".6"/>
+              <circle cx="28" cy="40" r="8" opacity=".6"/><circle cx="86" cy="40" r="8" opacity=".6"/>
+              <path d="M120 24h40l-8-7M160 36h-40l8 7" stroke="#9BA8CC"/>
+              <path d="M178 40h6m28 0h30m28 0h4v-9l-10-3-14-10h-46l-14 10-8 2v10"/>
+              <circle cx="198" cy="40" r="8"/><circle cx="256" cy="40" r="8"/>
+            </svg>
+          </div>
+          <ul>
+            <li>Autos, camionetas y motos</li>
+            <li>Tasación sin compromiso</li>
+            <li>Diferencia a convenir</li>
+          </ul>
+          <div class="actions"><a class="btn btn-light" href="https://wa.me/5491122679246?text=Hola%20Shift%20Motors!%20Quiero%20consultar%20por%20una%20permuta." target="_blank" rel="noopener">Consultar permuta</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div>
+        <h2>¿Comprás, vendés o permutás? <strong>Hablemos.</strong></h2>
+        <p>Escribinos por WhatsApp y te respondemos con disponibilidad, precio y opciones de pago.</p>
+      </div>
+      <a class="btn btn-wa" href="https://wa.me/5491122679246?text=Hola%20Shift%20Motors!" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 4.54 0 8.24 3.7 8.24 8.24 0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg> Escribir por WhatsApp</a>
+    </div>
+  </section>
+</main>
+
+<main id="viewCatalog" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <a class="crumb" href="#inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>Inicio</a>
+      <h1>Catálogo</h1>
+      <p class="sub" id="catSub">Todas las unidades disponibles. Entrá a cada vehículo para ver todas las fotos y la ficha completa.</p>
+    </div>
+    <div class="toolbar">
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo"></div>
+      <label class="sort" for="sortSel">Ordenar
+        <select id="sortSel">
+          <option value="new">Más nuevos</option>
+          <option value="km">Menor kilometraje</option>
+          <option value="az">A–Z</option>
+        </select>
+      </label>
+    </div>
+    <div class="grid" id="catGrid"></div>
+  </div>
+</main>
+
+<main id="viewDetail" hidden>
+  <div class="wrap" id="detailWrap"></div>
+</main>
+
+<footer id="contacto">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <img src="img/Recurso 1LOGO_EN BLANCO.png" alt="Shift Motors">
+        <p>Agencia de autos y motos. Compra, venta, consignación y permutas.</p>
+      </div>
+      <div>
+        <h4>Seguinos</h4>
+        <div class="social">
+          <a href="https://instagram.com/shiftmotors.ar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg>Instagram<small>@shiftmotors.ar</small></a>
+          <a href="https://www.tiktok.com/@shiftmotors.ar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.6 2.6 0 0 1-2.6-2.6 2.6 2.6 0 0 1 3.37-2.48V9.66A5.68 5.68 0 0 0 4.18 15.3a5.68 5.68 0 0 0 5.68 5.7 5.68 5.68 0 0 0 5.68-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48Z"/></svg>TikTok<small>@shiftmotors.ar</small></a>
+        </div>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <div class="social">
+          <a href="https://wa.me/5491122679246" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 4.54 0 8.24 3.7 8.24 8.24 0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>WhatsApp<small>+54 11 2267-9246</small></a>
+        </div>
+      </div>
+    </div>
+    <div class="legal"><span>© 2026 Shift Motors</span><span>Buenos Aires, Argentina</span></div>
+  </div>
+</footer>
+
+<a class="fab" href="https://wa.me/5491122679246" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 4.54 0 8.24 3.7 8.24 8.24 0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg></a>
+
+<dialog id="lightbox" aria-label="Fotos del vehículo">
+  <div class="lb">
+    <div class="lb-top"><span id="lbTitle"></span><button class="icon-btn" id="lbClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="lb-img" id="lbImg"><img alt=""></div>
+    <div class="lb-nav">
+      <button class="icon-btn" id="lbPrev" aria-label="Foto anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <span id="lbCount" style="align-self:center;min-width:64px;text-align:center;font-variant-numeric:tabular-nums;color:var(--mist);font-size:.85rem"></span>
+      <button class="icon-btn" id="lbNext" aria-label="Foto siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</dialog>
+
+
+
+<script>
+/* ████████████████████████████████████████████████████████████████
+   ██  CATÁLOGO DE VEHÍCULOS — ACÁ SE CARGAN TODOS LOS AUTOS/MOTOS  ██
+   ████████████████████████████████████████████████████████████████
+
+   CÓMO CARGAR LAS FOTOS
+   ---------------------
+   1. Al lado de shift-motors.html creá la carpeta  img/autos/
+   2. Hacé una carpeta por vehículo y guardá ahí sus fotos, por ejemplo:
+
+        shift-motors.html
+        img/
+          Recurso 1LOGO_EN BLANCO.png
+          autos/
+            hilux-2019/
+              1.jpg   ← la PRIMERA foto es la portada (la que se ve en el catálogo)
+              2.jpg
+              3.jpg  ...
+
+   3. En el vehículo, escribí cada foto en "fotos:[ ]" entre comillas y separadas por coma:
+        fotos:[
+          "img/autos/hilux-2019/1.jpg",
+          "img/autos/hilux-2019/2.jpg",
+          "img/autos/hilux-2019/3.jpg"
+        ]
+      · Podés poner todas las fotos que quieras (aparecen en la galería del detalle).
+      · Consejo: fotos horizontales, de unos 1600 px de ancho y menos de 500 KB cada una.
+      · Evitá espacios y tildes en los nombres de archivos y carpetas.
+      · Si "fotos" queda vacío  fotos:[]  se muestran los dibujos de muestra.
+
+   CÓMO AGREGAR UN VEHÍCULO NUEVO
+   ------------------------------
+   Copiá la PLANTILLA de abajo, pegala dentro de la lista VEHICULOS (entre los [ ])
+   y completá los datos. Cada vehículo va entre { } y separado del siguiente con una coma.
+
+   CÓMO QUITAR UN VEHÍCULO VENDIDO
+   -------------------------------
+   Borrá su bloque completo, desde la { hasta la } y su coma.
+
+   ── PLANTILLA (copiar desde la { hasta la },) ──────────────────────
+   {
+     id:"marca-modelo-anio",          // único, en minúsculas, sin espacios ni tildes. Es el link: tusitio.com/#marca-modelo-anio
+     titulo:"Marca Modelo Versión",   // nombre grande que se ve en la tarjeta
+     modelo:"Motor / versión",        // texto chico arriba del título
+     anio:2020,                       // año, SIN comillas
+     km:50000,                        // kilómetros, SIN comillas y SIN puntos (50000, no 50.000)
+     tipo:"auto",                     // "auto", "suv", "camioneta", "utilitario" o "moto" (define el filtro del catálogo)
+     specs:{                          // ficha técnica: podés agregar o quitar renglones
+       Motor:"1.6 115 CV",
+       Transmisión:"Manual 5 vel.",
+       Tracción:"Delantera",
+       Combustible:"Nafta",
+       Color:"Blanco",
+       Puertas:"5"
+     },
+     descripcion:"Texto libre sobre el estado, services, equipamiento, etc.",
+     fotos:[
+       "img/autos/carpeta-del-auto/1.jpg",
+       "img/autos/carpeta-del-auto/2.jpg"
+     ]
+   },
+   ─────────────────────────────────────────────────────────────────
+
+   OTROS CAMPOS (opcionales)
+   · ejemplo:true  → muestra la etiqueta "EJEMPLO". Borralo en tus vehículos reales.
+   · forma y color → solo sirven para el dibujo de muestra cuando no hay fotos.
+                     Cuando cargues fotos los podés borrar.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Número de WhatsApp: código de país + 9 + código de área + número, todo junto y sin "+" */
+const WHATSAPP = "5491122679246";
+
+const VEHICULOS = [
+
+  /* ═══ VEHÍCULO 1 — Citroën Berlingo ════════════════════════════ */
+  {
+    id:"citroen-berlingo-2016",                 // ← link único del vehículo
+    titulo:"Citroën Berlingo 1.6 HDi",          // ← título
+    modelo:"Berlingo 1.6 HDi",                  // ← modelo / versión
+    anio:2016,                                  // ← año (sin comillas)
+    km:175000,                                  // ← kilómetros (sin comillas ni puntos)
+    tipo:"utilitario",                          // ← "auto" | "suv" | "camioneta" | "utilitario" | "moto"
+    forma:"van", color:"#9BA8CC",               // ← solo para el dibujo de muestra (borrar al poner fotos)
+    specs:{                                     // ← ESPECIFICACIONES (ficha técnica)
+      Motor:"1.6 HDi",
+      Transmisión:"Manual",
+      Combustible:"Diésel",
+      Uso:"Familiar y trabajo",
+      Asientos:"Traseros desmontables"
+      // Color:"...",   ← sacá las // y completá si querés sumar más datos
+      // Puertas:"...",
+    },
+    descripcion:"Utilitario ideal para uso familiar y de trabajo. Los asientos traseros se pueden sacar para ganar espacio de carga. Motor 1.6 HDi diésel con caja manual.",
+    fotos:[                                     // ← FOTOS: la primera es la portada
+       "img/autos/berlingo/1.jpeg",
+      "img/autos/berlingo/2.jpeg",
+      "img/autos/berlingo/3.jpeg",
+      "img/autos/berlingo/4.jpeg",
+      "img/autos/berlingo/5.jpeg",
+      "img/autos/berlingo/6.jpeg",
+      "img/autos/berlingo/7.jpeg",
+      // (sacá las // del principio de cada línea cuando las fotos existan)
+    ]
+  },
+
+  /* ═══ VEHÍCULO 2 — Chevrolet Tracker ═══════════════════════════ */
+  {
+    id:"chevrolet-tracker-2013",                // ← link único del vehículo
+    titulo:"Chevrolet Tracker LTZ",             // ← título
+    modelo:"Tracker 1.8 LTZ",                   // ← modelo / versión
+    anio:2013,                                  // ← año (sin comillas)
+    km:109000,                                  // ← kilómetros (sin comillas ni puntos)
+    tipo:"suv",                                 // ← "auto" | "suv" | "camioneta" | "utilitario" | "moto"
+    forma:"hatch", color:"#3A4A6B",             // ← solo para el dibujo de muestra (borrar al poner fotos)
+    specs:{                                     // ← ESPECIFICACIONES (ficha técnica)
+      Motor:"1.8",
+      Transmisión:"Manual",
+      Combustible:"Nafta",
+      Versión:"LTZ"
+      // Color:"...",   ← sacá las // y completá si querés sumar más datos
+      // Puertas:"...",
+    },
+    descripcion:"SUV compacta con motor 1.8 nafta y caja manual, en su versión LTZ.",
+    fotos:[                                     // ← FOTOS: la primera es la portada
+       "img/autos/tracker-2013/1.jpeg",
+       "img/autos/tracker-2013/2.jpeg",
+       "img/autos/tracker-2013/3.jpeg",
+       "img/autos/tracker-2013/4.jpeg",
+       "img/autos/tracker-2013/5.jpeg",
+       "img/autos/tracker-2013/6.jpeg",
+    ]
+  },
+  /* ═══ VEHÍCULO 3 — Fiat Palio ══════════════════════════════════ */
+  {
+    id:"fiat-palio-2014",                 // ← link único del vehículo
+    titulo:"Fiat Palio 1.6 16v",
+    modelo:"Palio 1.6 16v",
+    anio:2014,
+    km:129000,
+    tipo:"auto",
+    forma:"hatch", color:"#B9BFC9",             // ← solo para el dibujo de muestra (borrar al poner fotos)
+    specs:{                                     // ← ESPECIFICACIONES (ficha técnica)
+      Motor:"1.6 16v",
+      Transmisión:"Manual",
+      Combustible:"Nafta",
+      Puertas:"5 puertas"
+    },
+    descripcion:"Hatchback de 5 puertas con motor 1.6 16v y caja manual.",
+    fotos:[                                     // ← FOTOS: la primera es la portada
+       "img/autos/palio-2014/1.jpeg",
+       "img/autos/palio-2014/2.jpeg",
+       "img/autos/palio-2014/3.jpeg",
+       "img/autos/palio-2014/4.jpeg",
+       "img/autos/palio-2014/5.jpeg",
+       "img/autos/palio-2014/6.jpeg",
+    ]
+  },
+  /* ═══ VEHÍCULO 4 — Chery Tiggo ═════════════════════════════════ */
+  {
+    id:"chery-tiggo-confort-2017",        // ← link único del vehículo
+    titulo:"Chery Tiggo Confort",
+    modelo:"Tiggo 1.6 Confort",
+    anio:2017,
+    km:115000,
+    tipo:"suv",
+    forma:"hatch", color:"#6E7480",             // ← solo para el dibujo de muestra (borrar al poner fotos)
+    specs:{                                     // ← ESPECIFICACIONES (ficha técnica)
+      Motor:"1.6",
+      Transmisión:"Manual",
+      Combustible:"Nafta",
+      Color:"Gris"
+    },
+    descripcion:"SUV con motor 1.6 nafta y caja manual, versión Confort. Color gris.",
+    fotos:[                                     // ← FOTOS: la primera es la portada
+        "img/autos/tiggo-2017/1.jpeg",
+       "img/autos/tiggo-2017/2.jpeg",
+       "img/autos/tiggo-2017/3.jpeg",
+       "img/autos/tiggo-2017/4.jpeg",
+       "img/autos/tiggo-2017/5.jpeg",
+       "img/autos/tiggo-2017/6.jpeg",
+       "img/autos/tiggo-2017/7.jpeg",
+    ]
+  },
+  /* ═══ VEHÍCULO 5 — Peugeot Partner ═════════════════════════════ */
+  {
+    id:"peugeot-partner-patagonica-2016", // ← link único del vehículo
+    titulo:"Peugeot Partner Patagónica",
+    modelo:"Partner Patagónica 1.6 HDi",
+    anio:2016,
+    km:116000,
+    tipo:"utilitario",
+    forma:"van", color:"#9BA8CC",             // ← solo para el dibujo de muestra (borrar al poner fotos)
+    specs:{                                     // ← ESPECIFICACIONES (ficha técnica)
+      Motor:"1.6 HDi",
+      Transmisión:"Manual",
+      Combustible:"Diésel"
+    },
+    descripcion:"Partner Patagónica con motor 1.6 HDi diésel y caja manual. Práctica para la familia o para trabajar.",
+    fotos:[                                     // ← FOTOS: la primera es la portada
+       "img/autos/partner-2016/1.jpeg",
+       "img/autos/partner-2016/2.jpeg",
+       "img/autos/partner-2016/3.jpeg",
+       "img/autos/partner-2016/4.jpeg",
+       "img/autos/partner-2016/5.jpeg",
+       "img/autos/partner-2016/6.jpeg",
+       "img/autos/partner-2016/7.jpeg",
+    ]
+  },
+  /* ═══ VEHÍCULO 6 — Peugeot 408 ═════════════════════════════════ */
+  {
+    id:"peugeot-408-allure-2012",         // ← link único del vehículo
+    titulo:"Peugeot 408 Allure",
+    modelo:"408 2.0 Allure",
+    anio:2012,
+    km:91000,
+    tipo:"auto",
+    forma:"sedan", color:"#3A3F48",             // ← solo para el dibujo de muestra (borrar al poner fotos)
+    specs:{                                     // ← ESPECIFICACIONES (ficha técnica)
+      Motor:"2.0",
+      Transmisión:"Manual",
+      Combustible:"Nafta",
+      Color:"Gris oscuro",
+      Carrocería:"Sedán"
+    },
+    descripcion:"Sedán con motor 2.0 nafta y caja manual, versión Allure. Color gris oscuro y 91.000 km.",
+    fotos:[                                     // ← FOTOS: la primera es la portada
+       "img/autos/408-2012/1.jpeg",
+       "img/autos/408-2012/2.jpeg",
+       "img/autos/408-2012/3.jpeg",
+       "img/autos/408-2012/4.jpeg",
+       "img/autos/408-2012/5.jpeg",
+       "img/autos/408-2012/6.jpeg",
+       "img/autos/408-2012/7.jpeg",
+    ]
+  }
+
+  /* ← Para sumar otro vehículo: poné una coma después de la } de arriba
+       y pegá la PLANTILLA acá. */
+];
+/* ████████████  FIN DEL CATÁLOGO — no hace falta tocar nada de acá para abajo  ████████████ */
+const TIPOS={todos:"Todos",auto:"Autos",suv:"SUV",camioneta:"Camionetas",utilitario:"Utilitarios",moto:"Motos"};
+
+/* ---------- fotos de muestra (solo mientras no haya fotos reales) ---------- */
+const ANGULOS=["Lateral","Frente","Trasera","Interior","Tablero","Motor"];
+const SIDE={sedan:"M40 150h18m64 0h116m64 0h26v-26l-34-10-46-34H136l-48 32-36 8-12 14z",
+  hatch:"M40 150h18m64 0h110m64 0h24v-30l-20-12-60-40H140l-52 40-36 8-12 14z",
+  pickup:"M36 150h20m70 0h108m70 0h20v-40h-102V74H150l-44 36-50 8-20 12z",
+  van:"M36 150h20m70 0h108m70 0h24V92l-20-24H140l-48 40-38 6-18 14z"};
+function sample(v,i){
+  const c=v.color, m="#9BA8CC", a=ANGULOS[i%6]; let g="";
+  if(a==="Lateral"){
+    g = v.forma==="moto"
+      ? `<circle cx="120" cy="150" r="32" fill="none" stroke="${c}" stroke-width="8"/><circle cx="290" cy="150" r="32" fill="none" stroke="${c}" stroke-width="8"/><path d="M120 150l50-60h70l50 60M170 90l-14-24h-20M240 90l20-24" fill="none" stroke="${c}" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`
+      : `<path d="${SIDE[v.forma]}" fill="${c}"/><circle cx="90" cy="150" r="28" fill="#01010D" stroke="${m}" stroke-width="4"/><circle cx="${v.forma==='pickup'||v.forma==='van'?290:302}" cy="150" r="28" fill="#01010D" stroke="${m}" stroke-width="4"/>`;
+  } else if(a==="Frente"||a==="Trasera"){
+    g = v.forma==="moto"
+      ? `<rect x="185" y="70" width="30" height="110" rx="12" fill="${c}"/><path d="M150 80h100" stroke="${m}" stroke-width="6" stroke-linecap="round"/><circle cx="200" cy="${a==='Frente'?95:150}" r="12" fill="${a==='Frente'?'#DBDFE2':'#E03A3A'}"/>`
+      : `<path d="M110 165V120l25-45h130l25 45v45z" fill="${c}"/><path d="M140 110l15-28h90l15 28z" fill="#01010D" opacity=".7"/><rect x="122" y="125" width="34" height="14" rx="4" fill="${a==='Frente'?'#DBDFE2':'#E03A3A'}"/><rect x="244" y="125" width="34" height="14" rx="4" fill="${a==='Frente'?'#DBDFE2':'#E03A3A'}"/><rect x="104" y="160" width="36" height="22" rx="4" fill="#01010D"/><rect x="260" y="160" width="36" height="22" rx="4" fill="#01010D"/>`;
+  } else if(a==="Interior"){
+    g = `<circle cx="150" cy="140" r="52" fill="none" stroke="${m}" stroke-width="10"/><circle cx="150" cy="140" r="14" fill="${c}"/><path d="M98 140h104M150 140v52" stroke="${m}" stroke-width="8"/><rect x="250" y="80" width="90" height="56" rx="6" fill="#01010D" stroke="${m}" stroke-width="3"/>`;
+  } else if(a==="Tablero"){
+    g = `<circle cx="140" cy="130" r="56" fill="#01010D" stroke="${m}" stroke-width="4"/><circle cx="260" cy="130" r="56" fill="#01010D" stroke="${m}" stroke-width="4"/><path d="M140 130l30-30M260 130l-34-18" stroke="${c==='#2B2F38'||c==='#1C2A4F'?'#DBDFE2':c}" stroke-width="5" stroke-linecap="round"/><text x="200" y="215" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="16" fill="#DBDFE2" letter-spacing="3">${String(v.km).padStart(6,"0")} KM</text>`;
+  } else {
+    g = `<rect x="120" y="80" width="160" height="90" rx="10" fill="${c}"/><rect x="140" y="60" width="120" height="24" rx="6" fill="#01010D" stroke="${m}" stroke-width="3"/><path d="M150 110h100M150 135h100" stroke="#01010D" stroke-width="8" opacity=".5"/>`;
+  }
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><radialGradient id="g" cx="50%" cy="80%" r="70%"><stop offset="0" stop-color="#042680"/><stop offset="1" stop-color="#00023B"/></radialGradient></defs><rect width="400" height="300" fill="url(#g)"/><path d="M0 182h400" stroke="${m}" stroke-opacity=".2"/>${g}<text x="380" y="34" text-anchor="end" font-family="Montserrat,sans-serif" font-size="11" letter-spacing="3" fill="${m}">FOTO DE MUESTRA · ${a.toUpperCase()}</text></svg>`;
+  return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
+const cache={};
+const fotosDe = v => v.fotos && v.fotos.length ? v.fotos : (cache[v.id] ||= ANGULOS.map((_,i)=>sample({forma:v.tipo==="moto"?"moto":v.tipo==="camioneta"?"pickup":v.tipo==="utilitario"?"van":"sedan",color:"#6C7A96",...v},i)));
+const fmtKm = n => n.toLocaleString("es-AR")+" km";
+const waLink = v => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hola Shift Motors! Me interesa el ${v.titulo} ${v.anio} (${fmtKm(v.km)}). ¿Sigue disponible?`)}`;
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const arrowL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg>';
+const arrowR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>';
+const waIcon='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 4.54 0 8.24 3.7 8.24 8.24 0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>';
+
+/* ---------- tarjeta (se usa en la landing y en el catálogo) ---------- */
+function cardEl(v){
+  const f=fotosDe(v), el=document.createElement("article");
+  el.className="card";
+  const chips=Object.values(v.specs).slice(0,4).map(s=>`<li>${esc(s)}</li>`).join("");
+  el.innerHTML=`<div class="photo" data-i="0">
+      <img class="go" src="${f[0]}" alt="${esc(v.titulo)}, foto 1 de ${f.length}" loading="lazy">
+      ${v.ejemplo?'<span class="tag">Ejemplo</span>':''}
+      ${f.length>1?`<button class="nav prev" aria-label="Foto anterior">${arrowL}</button><button class="nav next" aria-label="Foto siguiente">${arrowR}</button>
+      <div class="dots">${f.slice(0,6).map((_,k)=>`<i class="${k?'':'on'}"></i>`).join("")}</div>`:''}
+      <span class="count">1/${f.length}</span>
+    </div>
+    <div class="body">
+      <div><p class="model" style="margin:0">${esc(v.modelo)}</p><h3>${esc(v.titulo)}</h3></div>
+      <dl class="stats" style="margin:0"><div><dt>Año</dt><dd>${v.anio}</dd></div><div><dt>Kilometraje</dt><dd>${fmtKm(v.km)}</dd></div></dl>
+      <ul class="specs">${chips}</ul>
+      <div class="row">
+        <a class="btn btn-ghost" href="#${v.id}">Ver detalle</a>
+        <a class="btn btn-wa" href="${waLink(v)}" target="_blank" rel="noopener">${waIcon} Consultar</a>
+      </div>
+    </div>`;
+  const box=el.querySelector(".photo");
+  const set=n=>{n=(n+f.length)%f.length;box.dataset.i=n;const img=box.querySelector("img");img.src=f[n];img.alt=`${v.titulo}, foto ${n+1} de ${f.length}`;
+    box.querySelectorAll(".dots i").forEach((d,k)=>d.classList.toggle("on",k===n));box.querySelector(".count").textContent=`${n+1}/${f.length}`};
+  box.querySelector(".prev")?.addEventListener("click",()=>set(+box.dataset.i-1));
+  box.querySelector(".next")?.addEventListener("click",()=>set(+box.dataset.i+1));
+  box.querySelector("img").addEventListener("click",()=>{location.hash=v.id});
+  return el;
+}
+
+/* ---------- landing: carrusel ---------- */
+const track=document.getElementById("track");
+VEHICULOS.forEach(v=>track.appendChild(cardEl(v)));
+const bar=document.getElementById("bar");
+const step=()=>{const c=track.querySelector(".card");return c?c.getBoundingClientRect().width+parseFloat(getComputedStyle(track).columnGap||20):300};
+function updateBar(){
+  const fits=track.scrollWidth<=track.clientWidth+4;
+  document.querySelector(".car-ctrl").hidden=fits; bar.parentElement.hidden=fits;
+  const max=track.scrollWidth-track.clientWidth, vis=track.clientWidth/track.scrollWidth||1;
+  bar.style.width=(vis*100)+"%";
+  bar.style.transform=`translateX(${max>0?(track.scrollLeft/max)*((1-vis)/vis)*100:0}%)`;
+}
+function go(dir){
+  const max=track.scrollWidth-track.clientWidth-4;
+  if(dir>0&&track.scrollLeft>=max) track.scrollTo({left:0});
+  else if(dir<0&&track.scrollLeft<=4) track.scrollTo({left:track.scrollWidth});
+  else track.scrollBy({left:dir*step()});
+}
+document.getElementById("trackNext").onclick=()=>go(1);
+document.getElementById("trackPrev").onclick=()=>go(-1);
+track.addEventListener("scroll",updateBar,{passive:true});
+addEventListener("resize",updateBar);
+track.addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(1);if(e.key==="ArrowLeft")go(-1)});
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let paused=false;
+["mouseenter","focusin","touchstart"].forEach(ev=>track.addEventListener(ev,()=>paused=true,{passive:true}));
+["mouseleave","focusout"].forEach(ev=>track.addEventListener(ev,()=>paused=false));
+track.addEventListener("touchend",()=>setTimeout(()=>paused=false,6000),{passive:true});
+
+/* ---------- catálogo completo ---------- */
+let filtro="todos";
+const chipsEl=document.getElementById("chips"), grid=document.getElementById("catGrid"), sortSel=document.getElementById("sortSel");
+function renderChips(){
+  chipsEl.innerHTML=Object.entries(TIPOS).map(([k,label])=>{
+    const n=k==="todos"?VEHICULOS.length:VEHICULOS.filter(v=>v.tipo===k).length;
+    return n||k==="todos"?`<button class="chip" data-f="${k}" aria-pressed="${k===filtro}">${label}<b>${n}</b></button>`:"";
+  }).join("");
+  chipsEl.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{filtro=b.dataset.f;renderChips();renderGrid()});
+}
+function renderGrid(){
+  let list=VEHICULOS.filter(v=>filtro==="todos"||v.tipo===filtro);
+  const s=sortSel.value;
+  list=[...list].sort((a,b)=>s==="km"?a.km-b.km:s==="az"?a.titulo.localeCompare(b.titulo):b.anio-a.anio||a.km-b.km);
+  grid.innerHTML="";
+  if(!list.length){grid.innerHTML='<p class="empty">No hay unidades de este tipo por ahora.</p>';return}
+  list.forEach(v=>grid.appendChild(cardEl(v)));
+  document.getElementById("catSub").textContent=`${VEHICULOS.length} ${VEHICULOS.length===1?"unidad disponible":"unidades disponibles"}. Entrá a cada vehículo para ver todas las fotos y la ficha completa.`;
+}
+sortSel.onchange=renderGrid;
+renderChips();renderGrid();
+
+/* ---------- detalle del vehículo ---------- */
+const detailWrap=document.getElementById("detailWrap");
+let cur=null, idx=0;
+function renderDetail(v){
+  cur=v; idx=0;
+  const f=fotosDe(v);
+  const kp=[["Año",v.anio],["Kilometraje",fmtKm(v.km)],["Combustible",v.specs.Combustible||"—"],["Transmisión",v.specs.Transmisión||"—"]];
+  const rows=Object.entries(v.specs).map(([k,val])=>`<tr><th scope="row">${esc(k)}</th><td>${esc(val)}</td></tr>`).join("");
+  const otros=VEHICULOS.filter(o=>o.id!==v.id).sort((a,b)=>(b.tipo===v.tipo)-(a.tipo===v.tipo)).slice(0,3);
+  detailWrap.innerHTML=`
+    <div class="page-head" style="padding-bottom:0"><a class="crumb" href="#autos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>Volver al catálogo</a></div>
+    <div class="detail">
+      <div style="min-width:0">
+        <div class="stage" id="stage">
+          <img id="stageImg" src="${f[0]}" alt="">
+          ${v.ejemplo?'<span class="tag">Ejemplo</span>':''}
+          <button class="nav prev" id="stPrev" aria-label="Foto anterior">${arrowL}</button>
+          <button class="nav next" id="stNext" aria-label="Foto siguiente">${arrowR}</button>
+          <span class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Ampliar</span>
+          <span class="count" id="stCount"></span>
+        </div>
+        <div class="gthumbs" id="gthumbs">${f.map((src,k)=>`<button data-k="${k}" aria-label="Ver foto ${k+1}"><img src="${src}" alt="" loading="lazy"></button>`).join("")}</div>
+      </div>
+      <aside class="aside">
+        <div><p class="eyebrow" style="margin:0">${esc(v.modelo)}</p><h1 style="margin-top:8px">${esc(v.titulo)}</h1></div>
+        <dl class="kpis" style="margin:0">${kp.map(([k,val])=>`<div><dt>${k}</dt><dd>${esc(val)}</dd></div>`).join("")}</dl>
+        <a class="btn btn-wa" href="${waLink(v)}" target="_blank" rel="noopener">${waIcon} Consultar por WhatsApp</a>
+        <p class="note">${v.ejemplo?'Unidad de ejemplo para mostrar el formato del catálogo.':'Precio, financiación y permutas: consultá por WhatsApp.'}</p>
+        <table class="spec-table"><tbody>${rows}</tbody></table>
+      </aside>
+    </div>
+    ${v.descripcion?`<div class="desc"><div><h2>Descripción</h2><p>${esc(v.descripcion)}</p></div><div><h2>¿Tenés un usado?</h2><p style="color:var(--mist);font-size:.95rem">Lo tomamos como parte de pago. Escribinos y te pasamos una propuesta.</p></div></div>`:''}
+    ${otros.length?'<section class="more"><h2>Otros vehículos</h2><div class="grid" id="moreGrid"></div></section>':'<div style="height:clamp(32px,5vw,64px)"></div>'}`;
+  const mg=detailWrap.querySelector("#moreGrid"); if(mg) otros.forEach(o=>mg.appendChild(cardEl(o)));
+  const stage=detailWrap.querySelector("#stage");
+  detailWrap.querySelector("#stPrev").onclick=()=>show(idx-1);
+  detailWrap.querySelector("#stNext").onclick=()=>show(idx+1);
+  detailWrap.querySelectorAll("#gthumbs button").forEach(b=>b.onclick=()=>show(+b.dataset.k));
+  detailWrap.querySelector("#stageImg").onclick=()=>openLb();
+  swipe(stage,d=>show(idx+d));
+  show(0);
+  document.title=`${v.titulo} ${v.anio} · Shift Motors`;
+}
+function show(n){
+  const f=fotosDe(cur); idx=(n+f.length)%f.length;
+  const img=document.getElementById("stageImg"); img.src=f[idx]; img.alt=`${cur.titulo}, foto ${idx+1} de ${f.length}`;
+  document.getElementById("stCount").textContent=`${idx+1}/${f.length}`;
+  document.querySelectorAll("#gthumbs button").forEach((b,k)=>b.classList.toggle("on",k===idx));
+  if(lb.open) paintLb();
+}
+function swipe(el,cb){
+  let x0=null;
+  el.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});
+  el.addEventListener("touchend",e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)cb(dx<0?1:-1);x0=null},{passive:true});
+}
+
+/* ---------- visor a pantalla completa ---------- */
+const lb=document.getElementById("lightbox");
+function paintLb(){
+  const f=fotosDe(cur), img=lb.querySelector("#lbImg img");
+  img.src=f[idx]; img.alt=`${cur.titulo}, foto ${idx+1}`;
+  document.getElementById("lbTitle").textContent=`${cur.titulo} · ${cur.anio}`;
+  document.getElementById("lbCount").textContent=`${idx+1} / ${f.length}`;
+}
+function openLb(){paintLb();lb.showModal()}
+document.getElementById("lbClose").onclick=()=>lb.close();
+document.getElementById("lbPrev").onclick=()=>show(idx-1);
+document.getElementById("lbNext").onclick=()=>show(idx+1);
+swipe(document.getElementById("lbImg"),d=>show(idx+d));
+addEventListener("keydown",e=>{
+  if(document.getElementById("viewDetail").hidden)return;
+  if(e.key==="ArrowRight")show(idx+1);
+  if(e.key==="ArrowLeft")show(idx-1);
+});
+
+/* ---------- navegación entre vistas ---------- */
+const views={home:document.getElementById("viewHome"),catalog:document.getElementById("viewCatalog"),detail:document.getElementById("viewDetail")};
+let current="home";
+function route(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  const v=VEHICULOS.find(x=>x.id===h);
+  let next = v ? "detail" : h==="autos" ? "catalog" : "home";
+  if(lb.open) lb.close();
+  Object.entries(views).forEach(([k,el])=>el.hidden=k!==next);
+  document.querySelectorAll(".top nav a.navlink").forEach(a=>a.removeAttribute("aria-current"));
+  if(next==="catalog") document.querySelector('.top a[href="#autos"]').setAttribute("aria-current","page");
+  if(next==="detail") renderDetail(v);
+  else document.title="Shift Motors";
+  if(next==="home"){
+    const target=h&&document.getElementById(h);
+    if(target&&h!=="inicio") requestAnimationFrame(()=>target.scrollIntoView({behavior:current==="home"?"smooth":"auto"}));
+    else if(current!=="home"||h==="inicio") scrollTo({top:0,behavior:current==="home"?"smooth":"auto"});
+    requestAnimationFrame(updateBar);
+  } else scrollTo({top:0});
+  current=next;
+}
+addEventListener("hashchange",route);
+route();
+if(!reduce) setInterval(()=>{ if(current==="home" && track.scrollWidth>track.clientWidth+4 && !paused && !document.hidden) go(1); },4500);
+</script>
+
+
+</body></html>
